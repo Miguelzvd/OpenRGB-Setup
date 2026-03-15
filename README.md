@@ -1,129 +1,265 @@
-# OpenRGB-Setup
+# OpenRGB Setup Guide
 
-> **Objetivo:**  
-> 1️⃣ Instalar o OpenRGB e garantir que ele rode sempre como Administrador.  
-> 2️⃣ Instalar o driver *PawnIO* para obter controle total dos LEDs da placa‑mãe.  
-> 3️⃣ Integração com scripts e automações(opcional).
-
----
-
-## 📋 Pré‑requisitos
-
-| Item | Descrição | Como garantir |
-|------|-----------|---------------|
-| Sistema Operacional | Windows 10/11 (64‑bit) | Certifique‑se de ter privilégios de administrador. |
-| Conexão com a Internet | Para baixar os instaladores |  |
-| Permissão de UAC | O OpenRGB precisa de acesso elevado | Quando solicitado, clique em **Sim** ou configure o “Run as Administrator” na tarefa do Scheduler. |
+> **Objetivo**
+> Configurar o **OpenRGB** para:
+>
+> * controlar os LEDs do sistema
+> * iniciar automaticamente com o Windows
+> * carregar um perfil RGB automaticamente no boot
 
 ---
 
-## 🛠️ Passo 1 – Instalar o OpenRGB
+# 📋 Pré-requisitos
 
-1. **Baixe a última release**  
-   ```text
-   https://github.com/CalcProgrammer1/OpenRGB/releases/latest
-   ```
-2. Extraia o arquivo ZIP em `C:\OpenRGB` (ou use o instalador padrão).  
-3. **Verifique** que o executável está presente:  
-   ```text
-   C:\OpenRGB\OpenRGB.exe
-   ```
-
-> ⚠️ Se você usar a versão “Portable”, basta descompactar e usar o `OpenRGB.exe`.  
-> ✅ *Para uso futuro, copie a pasta completa para `C:\Program Files\OpenRGB`.*
+| Item                | Descrição                              |
+| ------------------- | -------------------------------------- |
+| Sistema Operacional | Windows 10 ou Windows 11 (64-bit)      |
+| Permissões          | Conta com privilégios de administrador |
+| Internet            | Necessária para baixar o OpenRGB       |
 
 ---
 
-## 🔧 Passo 2 – Instalar o driver PawnIO
+# 🛠️ Passo 1 – Instalar o OpenRGB
 
-1. **Baixe** o driver no repositório oficial (ou em outro local confiável).  
-   ```text
-   https://github.com/paulradu/PawnIO/releases/latest  (exemplo)
-   ```
-2. Extraia para `C:\PawnIO`.  
-3. Abra um Prompt de Comando **como Administrador** e execute o script de instalação:  
+1. Baixe a versão mais recente:
 
-   ```cmd
-   cd C:\PawnIO
-   install.bat     REM ou: pnputil /add-driver PawnIO.inf /install
-   ```
-
-4. **Reinicie** a máquina para que o driver seja carregado corretamente.
-
-> 💡 *Depois da reinicialização, abra o Gerenciador de Dispositivos → “Drivers de LED” (ou similar) e verifique se aparece “PawnIO Driver”.*  
-
----
-
-## 🚀 Passo 3 – Configurar OpenRGB para iniciar como Administrador
-
-### Opção 1: Task Scheduler (recomendado)
-
-| Etapa | Instruções |
-|-------|------------|
-| Crie uma nova tarefa | `Task Scheduler → Create Basic Task…` |
-| Nome da Tarefa | `OpenRGB - Logon Admin` |
-| Trigger | **On log on** → *All users* |
-| Action | **Start a program** →  
-  Path: `C:\Program Files\OpenRGB\OpenRGB.exe` (ou o caminho completo que você extraiu) |
-| Configurações avançadas | Marque **Run with highest privileges** e ajuste “Configure for” → Windows 10/11 |
-| Salve | Clique em **Finish** |
-
-> ✅ *A tarefa vai abrir automaticamente a cada logon com privilégios de Administrador.*
-
-### Opção 2: Startup Folder + Shortcut
-
-1. Copie `OpenRGB.exe` para a pasta de inicialização:  
-   ```text
-   %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
-   ```
-2. Clique com o botão direito → **Propriedades** → aba **Compatibilidade** → marque **Executar este programa como administrador**.  
-3. Salve e reinicie para testar.
-
-> ⚠️ *Esta segunda opção pode gerar prompts UAC repetidos; Task Scheduler evita isso.*
-
----
-
-## ✅ Passo 4 – Verificar o funcionamento
-
-1. **Inicie a máquina** (ela deve abrir automaticamente, se você configurou o Scheduler).  
-2. Abra o OpenRGB → verifique se todas as LEDs da placa‑mãe aparecem e são controláveis.  
-3. Se quiser testar um perfil automático:  
-
-   ```cmd
-   "C:\Program Files\OpenRGB\OpenRGB.exe" --profile "%APPDATA%\OpenRGB\<perfil>.orp"
-   ```
-
-4. **Logs** – Caso algo não apareça, abra o arquivo de log em `%APPDATA%\OpenRGB\OpenRGB.log` e procure por mensagens como “PawnIO not loaded” ou “Access denied”.
-
----
-
-## 🛠️ Dicas de Troubleshooting
-
-| Problema | Solução rápida |
-|----------|----------------|
-| LEDs da placa‑mãe não aparecem no OpenRGB | 1️⃣ Confirme que o driver PawnIO está instalado e carregado (Gerenciador de Dispositivos). <br>2️⃣ Certifique‑se de ter iniciado o OpenRGB como Administrador. |
-| UAC sempre pergunta “Esta aplicação quer fazer alterações no seu computador?” | Use a tarefa do Scheduler com “Run with highest privileges”. |
-| Driver PawnIO não instala | Execute `pnputil /add-driver PawnIO.inf /install` manualmente em um CMD elevado. |
-| Problemas de compatibilidade com BIOS | Verifique se o recurso *RGB control* está habilitado no BIOS (geralmente em “Onboard Devices” → “LED Control”). |
-
----
-
-## 📜 Estrutura do Documento
-
+```text
+https://github.com/CalcProgrammer1/OpenRGB/releases/latest
 ```
-# Guia de Instalação e Configuração do OpenRGB com PawnIO
-- Visão geral
-- Pré‑requisitos
-- Passo 1 – Instalar o OpenRGB
-- Passo 2 – Instalar o driver PawnIO
-- Passo 3 – Configurar para iniciar como Administrador
-- Verificação final
-- Troubleshooting rápido
+
+2. Extraia o arquivo.
+
+3. Coloque a pasta em:
+
+```text
+C:\Program Files\OpenRGB
+```
+
+4. Verifique se o executável existe:
+
+```text
+C:\Program Files\OpenRGB\OpenRGB.exe
 ```
 
 ---
 
-### Próximos passos
+# 🎨 Passo 2 – Criar ou carregar um perfil RGB
 
-- **Automação de perfis**: crie um script `.bat` ou use PowerShell para chamar `OpenRGB.exe --profile "<caminho_para_o_perfil>"`.
-- **Integração com Task Scheduler**: se quiser que o OpenRGB abra automaticamente ao logar, basta usar a tarefa criada no passo 3.
+1. Abra o **OpenRGB**.
+2. Configure as cores desejadas.
+3. Vá em:
+
+```
+Profiles → Save Profile
+```
+
+4. Salve o perfil.
+
+Exemplo:
+
+```
+Blue
+```
+
+O perfil será salvo automaticamente em:
+
+```text
+%APPDATA%\OpenRGB\Profiles
+```
+
+---
+
+# 🚀 Passo 3 – Testar carregamento do perfil via comando
+
+Antes de configurar a inicialização automática, teste o comando manualmente.
+
+Abra **PowerShell** e execute:
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --noautoconnect -p Blue
+```
+
+### Parâmetros usados
+
+| Parâmetro         | Função                                |
+| ----------------- | ------------------------------------- |
+| `--noautoconnect` | Evita tentar conectar ao servidor SDK |
+| `-p Blue`         | Carrega o perfil chamado **Blue**     |
+
+Se o RGB for aplicado corretamente, o comando está funcionando.
+
+---
+
+# ⚡ Passo 4 – Ativar inicialização automática
+
+O próprio OpenRGB pode configurar o autostart.
+
+Execute uma vez:
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --autostart-enable "--startminimized --noautoconnect -p Blue"
+```
+
+Isso fará o OpenRGB:
+
+* iniciar automaticamente com o Windows
+* iniciar **minimizado**
+* carregar o perfil **Blue**
+
+---
+
+# 🔍 Verificar se o autostart está ativo
+
+Execute:
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --autostart-check
+```
+
+Saída esperada:
+
+```
+Autostart enabled
+```
+
+---
+
+# 🧪 Teste final
+
+1. Reinicie o computador.
+2. Aguarde o Windows iniciar.
+3. Verifique se:
+
+* o OpenRGB iniciou automaticamente
+* o perfil **Blue** foi aplicado
+
+---
+
+# ⚠️ Observações
+
+Alguns sistemas podem mostrar mensagens como:
+
+```
+Failed to load SmbusI801.bin
+Failed to load SmbusNCT6793.bin
+```
+
+Isso significa apenas que o OpenRGB não conseguiu acessar alguns controladores SMBus da placa-mãe.
+
+Na maioria dos casos:
+
+✅ isso **não impede o funcionamento do RGB**
+
+---
+
+# 📂 Estrutura final
+
+```
+OpenRGB Setup
+│
+├─ Instalação do OpenRGB
+├─ Criação de perfil RGB
+├─ Teste do comando de carregamento
+├─ Configuração de autostart
+└─ Teste final
+```
+
+---
+
+# 💡 Dica extra (opcional)
+
+Para inicialização ainda mais rápida, é possível usar:
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --startminimized --noautoconnect --nodetect -p Blue
+```
+
+`--nodetect` reduz o tempo de inicialização do OpenRGB.
+
+---
+
+✅ **Seu setup agora está:**
+
+* automático no boot
+* carregando o perfil correto
+* sem scripts externos
+* usando apenas recursos nativos do OpenRGB
+
+---
+
+## 🧰 Comandos úteis do OpenRGB
+
+### Mostrar ajuda
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --help
+```
+
+---
+
+### Mostrar versão
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --version
+```
+
+---
+
+### Listar dispositivos RGB
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --list-devices
+```
+
+---
+
+### Carregar perfil
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --noautoconnect -p Blue
+```
+
+---
+
+### Salvar perfil atual
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --save-profile MeuPerfil.orp
+```
+
+---
+
+### Iniciar minimizado
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --startminimized
+```
+
+---
+
+### Ativar inicialização automática
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --autostart-enable "--startminimized --noautoconnect -p Blue"
+```
+
+---
+
+### Verificar autostart
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --autostart-check
+```
+
+---
+
+### Desativar autostart
+
+```powershell
+& "C:\Program Files\OpenRGB\OpenRGB.exe" --autostart-disable
+```
+
+---
+
+💡 **Dica:** use sempre `--noautoconnect` ao carregar perfis para evitar erros de conexão SDK.
+
